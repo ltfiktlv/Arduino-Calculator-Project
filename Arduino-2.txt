@@ -1,0 +1,67 @@
+// array that stores Seven Segment pin configuration
+int Seven_segment_array[14][7] = {  { 1,1,1,1,1,1,0 },    // Array for value 0 on 7 segment
+                          { 0,1,1,0,0,0,0 },    // Array for value 1 on 7 segment
+                          { 1,1,0,1,1,0,1 },    // Array for value 2 on 7 segment
+                          { 1,1,1,1,0,0,1 },    // Array for value 3 on 7 segment
+                          { 0,1,1,0,0,1,1 },    // Array for value 4 on 7 segment
+                          { 1,0,1,1,0,1,1 },   // Array for value 5 on 7 segment
+                          { 1,0,1,1,1,1,1 },    // Array for value 6 on 7 segment
+                          { 1,1,1,0,0,0,0 },    // Array for value 7 on 7 segment
+                          { 1,1,1,1,1,1,1 },    // Array for value 8 on 7 segment
+                          { 1,1,1,0,0,1,1 },   // Array for value 9 on 7 segment
+                          { 1,1,1,0,1,1,1 },   // Array for value A on 7 segment
+                          { 0,0,1,1,1,1,1 },   // Array for value B on 7 segment
+                          { 1,0,0,1,1,1,0 },   // Array for value C on 7 segment
+                          { 0,1,1,1,1,0,1 }};  // Array for value D on 7 segment
+                                       
+//defining function that will help us to translate number on 7 segment
+void Write_Num_on_Seven_Segment(int);
+
+int seven_segmnt_A=2,seven_segmnt_B=3,seven_segmnt_C=4,seven_segmnt_D=5,seven_segmnt_E=6,seven_segmnt_F=7,seven_segmnt_G=8;
+
+void setup() 
+{ 
+  // set pin modes
+  pinMode(seven_segmnt_A, OUTPUT);   
+  pinMode(seven_segmnt_B, OUTPUT);
+  pinMode(seven_segmnt_C, OUTPUT);
+  pinMode(seven_segmnt_D, OUTPUT);
+  pinMode(seven_segmnt_E, OUTPUT);
+  pinMode(seven_segmnt_F, OUTPUT);
+  pinMode(seven_segmnt_G, OUTPUT);
+  int baud_rate = 9600;
+  Serial.begin(baud_rate);
+  
+ 
+}
+
+void loop() 
+{
+  
+  //counter loop
+  
+  if(Serial.available()){
+  byte data_from_Arduino1 = Serial.read();
+    Serial.println((int)data_from_Arduino1);
+    int data_from_Arduino1_int;
+    if((char)data_from_Arduino1 < 'A'){
+    data_from_Arduino1_int = (int)data_from_Arduino1 - 48;
+    }
+    else{
+     data_from_Arduino1_int = (int)data_from_Arduino1 - 55; 
+    }
+   Write_Num_on_Seven_Segment(data_from_Arduino1_int); 
+  }
+    
+}
+
+// function to write values on seven segment  
+void Write_Num_on_Seven_Segment(int number_to_write) 
+{
+  int sevenSegment_pin_index = 2;
+  for (int l=0; l < 7; l++) {
+   digitalWrite(sevenSegment_pin_index, Seven_segment_array[number_to_write][l]);
+   sevenSegment_pin_index++;
+  }
+}
+
